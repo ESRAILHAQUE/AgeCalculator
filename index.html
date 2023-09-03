@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Age Calculator</title>
+</head>
+<style>
+    .container{
+        border: 1px solid #fff;
+        padding: 10px;
+        margin: 10px;
+        text-align: center;
+        border-radius: 10px;
+        box-shadow: 5px 5px 30px #000;
+    }
+    label{
+        font-size: 25px;
+        font-weight: 600;
+    }
+    input{
+        font-size: 25px;
+        padding: 5px;
+        margin: 5px;
+    }
+    button{
+        margin: 10px;
+        padding: 10px;
+        font-size: 30px;
+        border-radius: 5px;
+        border: 1px solid #000;
+        background-color: lightcoral;
+    }
+    button:hover{
+        background-color: #fff;
+        color: #000;
+        border: 1px solid #000;
+    }
+    h1{
+        background-color: tomato;
+        color: #000;
+    }
+    p{
+        font-size: 30px;
+     
+        font-weight: 800;
+
+    }
+    footer{
+        text-align: center;
+        margin-top: 50px;
+    }
+</style>
+<body>
+   <div class="container">
+    <h1>Age Calculator</h1>
+    <label for="birthdate">Enter your birthdate: </label>
+    <input type="date" id="birthdate"> <br>
+    <button onclick="calculateAge()">Calculate Age</button>
+    <p> <span id="result"></span></p>
+   
+   </div>
+<footer>
+    <div>
+        <h2>All Rights Reserved to Md Esrail Haque</h2>
+    </div>
+</footer>
+    <script>
+        function calculateAge() {
+            // Get the birthdate input value
+            var birthdate = new Date(document.getElementById('birthdate').value);
+                 // Get the current date
+            var currentDate = new Date();
+            
+            // Calculate the age
+            var age = currentDate.getFullYear() - birthdate.getFullYear();
+            
+            // Check if the birthday hasn't occurred yet this year
+            if (currentDate.getMonth() < birthdate.getMonth() || (currentDate.getMonth() === birthdate.getMonth() && currentDate.getDate() < birthdate.getDate())) {
+                age--;
+            }
+            if(document.getElementById('birthdate').value=== ' '){
+                document.getElementById('result').textContent ="Please Enter birthdate.";
+            }
+            else if(age<0){
+                document.getElementById('result').textContent ="You are not born yet baby.";
+            }
+            else if(age==0){
+                document.getElementById('result').textContent ="Your have just born baby!";
+            }
+            else{
+            // Display the result
+            document.getElementById('result').textContent ="Your are " + age + " years old";
+            
+            }
+           
+        }
+    </script>
+</body>
+</html>
