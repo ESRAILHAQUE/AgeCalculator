@@ -1,98 +1,368 @@
 <!DOCTYPE html>
-<html>
-<head>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Instantly calculate your exact age in years, months, and days with a beautiful, responsive age calculator." />
     <title>Age Calculator</title>
-</head>
-<style>
-    .container{
-        border: 1px solid #fff;
-        padding: 10px;
-        margin: 10px;
-        text-align: center;
-        border-radius: 10px;
-        box-shadow: 5px 5px 30px #000;
-    }
-    label{
-        font-size: 25px;
-        font-weight: 600;
-    }
-    input{
-        font-size: 25px;
-        padding: 5px;
-        margin: 5px;
-    }
-    button{
-        margin: 10px;
-        padding: 10px;
-        font-size: 30px;
-        border-radius: 5px;
-        border: 1px solid #000;
-        background-color: lightcoral;
-    }
-    button:hover{
-        background-color: #fff;
-        color: #000;
-        border: 1px solid #000;
-    }
-    h1{
-        background-color: tomato;
-        color: #000;
-    }
-    p{
-        font-size: 30px;
-     
-        font-weight: 800;
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: hsl(230 20% 8%);
+        --bg-accent: hsl(256 72% 46% / 0.6);
+        --surface: hsl(0 0% 100% / 0.06);
+        --surface-strong: hsl(0 0% 100% / 0.12);
+        --text: hsl(0 0% 100%);
+        --text-dim: hsl(0 0% 100% / 0.7);
+        --primary: hsl(267 84% 60%);
+        --primary-strong: hsl(267 84% 55%);
+        --danger: hsl(0 84% 60%);
+        --ok: hsl(150 84% 45%);
+        --shadow: 0 20px 60px -20px hsl(0 0% 0% / 0.5), 0 6px 18px -6px hsl(0 0% 0% / 0.4);
+        --radius: 16px;
+      }
 
-    }
-    footer{
-        text-align: center;
-        margin-top: 50px;
-    }
-</style>
-<body>
-   <div class="container">
-    <h1>Age Calculator</h1>
-    <label for="birthdate">Enter your birthdate: </label>
-    <input type="date" id="birthdate"> <br>
-    <button onclick="calculateAge()">Calculate Age</button>
-    <p> <span id="result"></span></p>
-   
-   </div>
-<footer>
-    <div>
-        <h2>All Rights Reserved to Md Esrail Haque</h2>
-    </div>
-</footer>
-    <script>
-        function calculateAge() {
-            // Get the birthdate input value
-            var birthdate = new Date(document.getElementById('birthdate').value);
-                 // Get the current date
-            var currentDate = new Date();
-            
-            // Calculate the age
-            var age = currentDate.getFullYear() - birthdate.getFullYear();
-            
-            // Check if the birthday hasn't occurred yet this year
-            if (currentDate.getMonth() < birthdate.getMonth() || (currentDate.getMonth() === birthdate.getMonth() && currentDate.getDate() < birthdate.getDate())) {
-                age--;
-            }
-            if(document.getElementById('birthdate').value=== ' '){
-                document.getElementById('result').textContent ="Please Enter birthdate.";
-            }
-            else if(age<0){
-                document.getElementById('result').textContent ="You are not born yet baby.";
-            }
-            else if(age==0){
-                document.getElementById('result').textContent ="Your have just born baby!";
-            }
-            else{
-            // Display the result
-            document.getElementById('result').textContent ="Your are " + age + " years old";
-            
-            }
-           
+      /* Page layout */
+      html, body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell,
+          Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+        color: var(--text);
+        background: radial-gradient(1200px 800px at 10% 10%, var(--bg-accent), transparent),
+          radial-gradient(1200px 800px at 90% 90%, hsl(200 100% 50% / 0.25), transparent),
+          var(--bg);
+        display: grid;
+        place-items: center;
+        padding: clamp(16px, 4vw, 40px);
+      }
+
+      .card {
+        width: min(680px, 100%);
+        background: linear-gradient(180deg, var(--surface), hsl(0 0% 100% / 0.03));
+        border: 1px solid var(--surface-strong);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+        backdrop-filter: blur(8px);
+      }
+
+      .header {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        align-items: center;
+        gap: 16px;
+        padding: clamp(18px, 4vw, 28px) clamp(18px, 4vw, 32px);
+        border-bottom: 1px solid var(--surface-strong);
+      }
+      .logo {
+        inline-size: clamp(40px, 8vw, 56px);
+        block-size: clamp(40px, 8vw, 56px);
+        display: grid;
+        place-items: center;
+        border-radius: 12px;
+        background: linear-gradient(135deg, hsl(267 84% 60% / 0.35), hsl(200 100% 50% / 0.25));
+        border: 1px solid var(--surface-strong);
+      }
+      .logo svg {
+        width: 60%;
+        height: 60%;
+        color: var(--text);
+      }
+      .title {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .title h1 {
+        margin: 0;
+        font-size: clamp(20px, 3.2vw, 28px);
+        line-height: 1.2;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+      .title p {
+        margin: 0;
+        color: var(--text-dim);
+        font-size: clamp(12px, 2.3vw, 14px);
+      }
+
+      .content {
+        display: grid;
+        gap: 18px;
+        padding: clamp(18px, 4vw, 28px) clamp(18px, 4vw, 32px);
+      }
+
+      .field {
+        display: grid;
+        gap: 8px;
+      }
+      label {
+        font-weight: 600;
+        font-size: clamp(14px, 2.6vw, 16px);
+        color: var(--text);
+      }
+      input[type="date"] {
+        appearance: none;
+        width: 100%;
+        padding: 14px 14px;
+        color: var(--text);
+        background: hsl(0 0% 100% / 0.06);
+        border: 1px solid var(--surface-strong);
+        border-radius: 12px;
+        font-size: clamp(14px, 2.8vw, 16px);
+        transition: border-color .2s ease, background-color .2s ease, box-shadow .2s ease;
+      }
+      input[type="date"]::placeholder {
+        color: var(--text-dim);
+      }
+      input[type="date"]:hover {
+        background: hsl(0 0% 100% / 0.09);
+      }
+      input[type="date"]:focus-visible {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 4px hsl(267 84% 60% / 0.25);
+      }
+
+      .actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      button {
+        cursor: pointer;
+        appearance: none;
+        border: none;
+        color: white;
+        background: linear-gradient(135deg, var(--primary), hsl(230 84% 60%));
+        padding: 12px 18px;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: clamp(14px, 2.8vw, 16px);
+        letter-spacing: 0.02em;
+        transition: transform .06s ease, filter .2s ease, box-shadow .2s ease;
+        box-shadow: 0 10px 24px -12px hsl(267 84% 60% / 0.6);
+      }
+      button:hover { filter: brightness(1.05); }
+      button:active { transform: translateY(1px); }
+      button:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 4px hsl(267 84% 60% / 0.25), 0 10px 24px -12px hsl(267 84% 60% / 0.6);
+      }
+      button[disabled] {
+        cursor: not-allowed;
+        opacity: 0.6;
+        filter: grayscale(0.2);
+      }
+
+      .hint {
+        color: var(--text-dim);
+        font-size: clamp(12px, 2.3vw, 14px);
+      }
+
+      .result {
+        margin-top: 8px;
+        background: hsl(0 0% 100% / 0.04);
+        border: 1px solid var(--surface-strong);
+        border-radius: 12px;
+        padding: 14px 16px;
+      }
+      .result h2 {
+        margin: 0 0 6px;
+        font-size: clamp(18px, 3vw, 22px);
+        line-height: 1.25;
+      }
+      .result p {
+        margin: 0;
+        color: var(--text-dim);
+        font-size: clamp(13px, 2.6vw, 15px);
+      }
+
+      .error {
+        color: var(--danger);
+        font-weight: 600;
+      }
+      .success { color: var(--ok); }
+
+      .footer {
+        padding: 14px 18px;
+        border-top: 1px solid var(--surface-strong);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+        color: var(--text-dim);
+        font-size: clamp(12px, 2.3vw, 14px);
+      }
+      .footer a { color: inherit; text-decoration: none; }
+      .footer a:hover { text-decoration: underline; }
+
+      @media (prefers-color-scheme: light) {
+        :root {
+          --bg: hsl(220 33% 97%);
+          --text: hsl(230 26% 12%);
+          --text-dim: hsl(230 12% 35%);
+          --surface: hsl(0 0% 100%);
+          --surface-strong: hsl(230 16% 90%);
+          --bg-accent: hsl(256 72% 66% / 0.25);
+          --shadow: 0 18px 50px -22px hsl(230 33% 20% / 0.25), 0 6px 18px -6px hsl(230 33% 20% / 0.18);
         }
+        .result { background: hsl(230 33% 97%); }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="card" role="main">
+      <header class="header">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M7 3v4M17 3v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <rect x="3" y="5" width="18" height="16" rx="4" stroke="currentColor" stroke-width="2"/>
+            <path d="M7 11h4M7 15h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="title">
+          <h1>Age Calculator</h1>
+          <p>Calculate your exact age in years, months, and days.</p>
+        </div>
+      </header>
+
+      <section class="content" aria-labelledby="calculator-title">
+        <div class="field">
+          <label for="birthdate" id="calculator-title">Enter your birthdate</label>
+          <input type="date" id="birthdate" name="birthdate" placeholder="YYYY-MM-DD" />
+          <p class="hint">We only use this locally in your browser.</p>
+        </div>
+
+        <div class="actions">
+          <button id="calc-btn" type="button" disabled>Calculate Age</button>
+          <span id="status" class="hint" role="status" aria-live="polite"></span>
+        </div>
+
+        <div id="result" class="result" aria-live="polite" hidden>
+          <h2 id="result-title"></h2>
+          <p id="result-detail"></p>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <span>All rights reserved to <strong>Md Esrail Haque</strong></span>
+        <span>Built with ❤️ for the web</span>
+      </footer>
+    </main>
+
+    <script>
+      (function () {
+        const birthInput = document.getElementById('birthdate');
+        const calcBtn = document.getElementById('calc-btn');
+        const statusEl = document.getElementById('status');
+        const resultCard = document.getElementById('result');
+        const resultTitle = document.getElementById('result-title');
+        const resultDetail = document.getElementById('result-detail');
+
+        // Set maximum selectable date to today
+        const todayISO = new Date().toISOString().split('T')[0];
+        birthInput.setAttribute('max', todayISO);
+
+        // Enable button when there is a value
+        birthInput.addEventListener('input', () => {
+          const hasValue = Boolean(birthInput.value);
+          calcBtn.disabled = !hasValue;
+          statusEl.textContent = '';
+        });
+
+        // Allow Enter to trigger calculation
+        birthInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' && !calcBtn.disabled) {
+            e.preventDefault();
+            calculate();
+          }
+        });
+
+        calcBtn.addEventListener('click', calculate);
+
+        function calculate() {
+          const raw = birthInput.value;
+          if (!raw) {
+            showError('Please select your birthdate.');
+            return;
+          }
+
+          const birthDate = new Date(raw + 'T00:00:00');
+          if (Number.isNaN(birthDate.getTime())) {
+            showError('That does not look like a valid date.');
+            return;
+          }
+
+          const now = new Date();
+          // Guard against future dates
+          if (birthDate > now) {
+            showError("You haven't been born yet.");
+            return;
+          }
+
+          const diff = getPreciseAge(birthDate, now);
+          const years = diff.years;
+          const months = diff.months;
+          const days = diff.days;
+
+          const headline = years === 0
+            ? 'You are less than 1 year old'
+            : `You are ${years} year${years !== 1 ? 's' : ''} old`;
+
+          const details = [];
+          details.push(`${years} year${years !== 1 ? 's' : ''}`);
+          details.push(`${months} month${months !== 1 ? 's' : ''}`);
+          details.push(`${days} day${days !== 1 ? 's' : ''}`);
+
+          resultTitle.textContent = headline;
+          resultDetail.textContent = `Precisely: ${details.join(', ')}.`;
+          resultCard.hidden = false;
+          statusEl.textContent = '';
+        }
+
+        function showError(message) {
+          resultCard.hidden = true;
+          statusEl.textContent = message;
+          statusEl.classList.add('error');
+          // Remove error style after a short delay to keep UI clean on success
+          setTimeout(() => statusEl.classList.remove('error'), 1200);
+        }
+
+        function getPreciseAge(fromDate, toDate) {
+          // Calculate years, months, and days difference
+          let years = toDate.getFullYear() - fromDate.getFullYear();
+          let months = toDate.getMonth() - fromDate.getMonth();
+          let days = toDate.getDate() - fromDate.getDate();
+
+          if (days < 0) {
+            // Borrow days from previous month
+            const prevMonthDate = new Date(toDate.getFullYear(), toDate.getMonth(), 0);
+            const daysInPrevMonth = prevMonthDate.getDate();
+            days += daysInPrevMonth;
+            months -= 1;
+          }
+
+          if (months < 0) {
+            months += 12;
+            years -= 1;
+          }
+
+          // Safety: never return negatives
+          years = Math.max(0, years);
+          months = Math.max(0, months);
+          days = Math.max(0, days);
+
+          return { years, months, days };
+        }
+      })();
     </script>
-</body>
+  </body>
 </html>
